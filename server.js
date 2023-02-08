@@ -5,9 +5,24 @@ app.use(express.json({limit: "1mb"}));
 
 module.exports = app;
 
+app.all('*', function (_, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, auth, authad, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    next();
+  });
+
 // routes
 const userRegistration = require("./src/routes/userRegistration");
+const userCheck = require("./src/routes/userRegistration");
+const hasher = require("./src/config/hashPass.model");
 
-app.get("/", (req, res)=> res.send("aqui mira").json());
+//routes pruebas
+app.post("/", (req, res)=> res.send("aqui miaara"));
+app.get("/hasher", hasher.hashPassword);
 
+
+//routes post
 app.post("/registeruser", userRegistration.checkUserData, userRegistration.saveUser);
+app.post("/checkavailability", userCheck.checkUserData);

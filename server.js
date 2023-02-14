@@ -16,7 +16,9 @@ app.all('*', function (_, res, next) {
 // routes
 const userRegistration = require("./src/routes/userRegistration");
 const userCheck = require("./src/routes/userRegistration");
+const loguser = require("./src/routes/userLogin");
 const hasher = require("./src/config/hashPass.model");
+const middle = require("./src/middleware/index");
 
 //routes pruebas
 app.post("/", (req, res)=> res.send("aqui miaara"));
@@ -26,3 +28,4 @@ app.get("/hasher", hasher.hashPassword);
 //routes post
 app.post("/registeruser", userRegistration.checkUserData, userRegistration.saveUser);
 app.post("/checkavailability", userCheck.checkUserData);
+app.post("/loguser", loguser.logging)

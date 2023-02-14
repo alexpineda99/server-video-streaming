@@ -19,10 +19,14 @@ const UserSchema = new Schema({
         message: props => `${props.value} Is not a valid email`
     }
 },
-    password: {type: String, require: [true, "This field is required"]}
+    password: {type: String, require: [true, "This field is required"], minLength: [8, "Minimun 8 characters"], }
 },{
     timestamps: true
 });
+
+module.exports = model("User", UserSchema);
+
+
 
 // ************* validation password field backup ****
 
@@ -35,5 +39,3 @@ const UserSchema = new Schema({
 //     },
 //     message: props => `${props.value} Is not a valid password`
 // }}
-
-module.exports = model("User", UserSchema);

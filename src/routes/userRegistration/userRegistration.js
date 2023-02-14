@@ -73,27 +73,18 @@ module.exports.saveUser = async function (req, res) {
     });
 };
 
-
-
-module.exports.validDataUser = async function (req, res, next) {
-  const { username, email, password } = req.body;
-
   // username regex explanation https://stackoverflow.com/questions/12018245/regular-expression-to-validate-username
 
-  let regUsername = /^(?=.{4,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+$/gm; // regular expression only letters
+  // let regUsername = /^(?=.{3,20}$)(?![])?!.*[_.-]{2})[a-zA-Z0-9._-]+(?<![])$/gm; // regular expression only letters
                   // └─────┬────┘└───┬──┘└─────┬─────┘└─────┬─────┘ └───┬───┘
-                  // │         │         │            │           no _ or . at the end
+                  // │         │         │            │           _ or .  or - at the end
                   // │         │         │            │
                   // │         │         │            allowed characters
                   // │         │         │
                   // │         │         no __ or _. or ._ or .. inside
                   // │         │
-                  // │         no _ or . at the beginning
+                  // │          _ or . at the beginning but not continued
                   // │
                   // username is 4-20 characters long
-  let regEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,16})/gm;
 
 
-
-}

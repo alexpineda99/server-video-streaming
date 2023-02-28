@@ -24,9 +24,9 @@ module.exports.logging = async function (req, res) {
     return res.status(400).send("Email, username or password do not match.");
 
 
-  let user = jwt.sign({id:userWithEmailorUsername[0]._id.toString(), user: userWithEmailorUsername[0].username}, _SIGN, {algorithm: "HS256", expiresIn: "10m"})
+  let user = jwt.sign({id:userWithEmailorUsername[0]._id.toString(), user: userWithEmailorUsername[0].username}, _SIGN, {algorithm: "HS256", expiresIn: "1d"})
   res.send({
-    data: user,
+    token: user,
     successful: true
   })
 

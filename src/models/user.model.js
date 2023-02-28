@@ -25,17 +25,3 @@ const UserSchema = new Schema({
 });
 
 module.exports = model("User", UserSchema);
-
-
-
-// ************* validation password field backup ****
-
-// password: {type: String, require: [true, "This field is required"], 
-// minLength: [8, "Minimun 8 characters"], 
-// maxLength: [16, "Maximun 16 characters"],
-// validate: {
-//     validator: function(pass) {
-//         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,16})/gm.test(pass)
-//     },
-//     message: props => `${props.value} Is not a valid password`
-// }}

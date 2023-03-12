@@ -18,7 +18,7 @@ const userRegistration = require("./src/routes/userRegistration");
 const userCheck = require("./src/routes/userRegistration");
 const loguser = require("./src/routes/userLogin");
 const hasher = require("./src/config/hashPass.model");
-// const middle = require("./src/middleware/index");
+const middle = require("./src/middleware/index");
 const file = require("./src/middleware/Cloudinary");
 
 //routes pruebas
@@ -31,3 +31,6 @@ app.get("/hasher", hasher.hashPassword);
 app.post("/registeruser", userRegistration.checkUserData, userRegistration.saveUser);
 app.post("/checkavailability", userCheck.checkUserData);
 app.post("/loguser", loguser.logging)
+
+//routes get
+app.get("/profile", middle.authHeader, middle.validSign)

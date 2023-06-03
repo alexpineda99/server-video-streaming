@@ -1,24 +1,29 @@
 const multer = require("multer");
 
-// const storage = multer.memoryStorage();
+// const storage = multer.diskStorage({
+//   destination: "./uploads",
+//   filename: function (req, file, cb) {
+//     const ext = file.originalname.split(".").pop();
+//     cb(null, `${Date.now()}.${ext}`);
+//   },
+// });
 
-// const singleUpload = multer({storage}).single("file");
+const storage = multer.memoryStorage();
 
-// export default singleUpload;
+const fileFilter = function (req, file, cb) {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    cb(null, true);
+  } else {
+    // cb(new Error('Invalid file type'), false);
+    console.log("Error invalid type")
+  }
+};
 
-const storageEngine = multer.diskStorage({
-    destination: "./images",
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}--${file.originalname}`);
-    },
-  });
-  
-  const upload = multer({
-      storage: storageEngine
-  })
-  
-  
-  export default function uploadAvatar (file) {
-    upload.single(file)
-  } 
-  
+exports.upload = multer({
+  storage,
+  limits: {
+    fileSize:  1024 * 1024 * 2 //1MB
+  },
+  fileFilter: fileFilter
+
+})

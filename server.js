@@ -21,11 +21,12 @@ const loguser = require("./src/routes/userLogin");
 const hasher = require("./src/config/hashPass.model");
 const uploader = require("./src/middleware/multer")
 const getUser = require("./src/routes/getUser");
+const userFollow = require("./src/routes/userFollow");
 // const middle = require("./src/middleware/index");
 
 //routes pruebas
 app.get("/", (req, res)=> res.send("aqui miaara"));
-// app.post("/upload", file.getDataUri)
+app.get("/follow/:username", userFollow.followUser)
 app.post("/testimage", uploader.upload.single("file"), (req, res) => {
   res.send({data: "todo bien", pic: req.body, data: req.file})
 })

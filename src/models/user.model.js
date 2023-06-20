@@ -42,7 +42,12 @@ const UserSchema = new Schema(
       url: {
         type: String,
         required: true,
-        validate: { validator: function (Url) { return /\.(jpe?g|png)$/i.test(Url)}, message: () => "Only .jpg, .jpeg and .png files are allowed" },
+        validate: {
+          validator: function (Url) {
+            return /\.(jpe?g|png)$/i.test(Url);
+          },
+          message: () => "Only .jpg, .jpeg and .png files are allowed",
+        },
       },
     },
     password: {
@@ -50,6 +55,18 @@ const UserSchema = new Schema(
       required: [true, "This field is required"],
       minLength: [8, "Minimun 8 characters"],
     },
+    followers: [
+      {
+        userId: { type: Schema.Types.ObjectId, required: true, unique: true, ref: "User"},
+        username: { type: String, require: true, unique: true},
+      },
+    ],
+    following: [
+      {
+        userId: { type: Schema.Types.ObjectId, required: true, unique: true, ref: "User"},
+        username: { type: String, require: true, unique: true},
+      },
+    ],
   },
   {
     timestamps: true,

@@ -8,6 +8,12 @@ module.exports.getUser = async function (req, res) {
 
   try {
     let result = await user.find({ username: username });
+    let currentUser = jwt.decode(userToken, _SIGN).user;
+
+    if (username === currentUser) {
+      return res.send({sameUser: true})
+    }
+
     res.send({
       infoUser: {
         username: result[0].username,
@@ -16,8 +22,9 @@ module.exports.getUser = async function (req, res) {
         followers: result[0].followers,
         following: result[0].following,
       },
-      currentUser: jwt.decode(userToken, _SIGN).user
+      currentUser: currentUser
     });
+
   } catch (err) {
     res.status(404).send("Error " + err);
   }

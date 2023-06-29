@@ -26,11 +26,18 @@ module.exports.followUser = async function (req, res) {
         await User.updateOne({username: userTofollow.username}, {$push: {followers: {userId: currentUser._id, username: currentUser.username}}})
         await addFollowersToOtherUser.save()
 
+        res.send({
+            msg: "User followed",
+            successful: true
+        })
 
     } catch(err) {
 
-
-        console.log(err)
+        console.log("error en following")
+        res.send({
+            msg: err,
+            successful: true
+        })
 
     }
 

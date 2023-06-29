@@ -1,8 +1,9 @@
 require("../../config/db");
 const jwt = require("jsonwebtoken");
+const token = require("../../middleware/token");
 const User = require("../../models/user.model");
 
-module.exports.logging = async function (req, res) {
+module.exports.logging = async function (req, res, next) {
 
   const {_SIGN} = process.env;
 
@@ -24,9 +25,17 @@ module.exports.logging = async function (req, res) {
     return res.status(400).send("Email, username or password do not match.");
 
 
-  let user = jwt.sign({user: userWithEmailorUsername[0].username}, _SIGN, {algorithm: "HS256", expiresIn: "1d"})
-  res.send({
-    token: user,
+  // let user = jwt.sign({user: userWithEmailorUsername[0].username}, _SIGN, {algorithm: "HS256", expiresIn: "1d"})
+
+  let accessToken = token.userAccesToken(userWithEmailorUsername[0].username);
+  let refreshToken = token.userAccesToken(userWithEmailorUsername[0].username);
+
+  res.cookie('jwt', refreshToken, { httpOnly: true, 
+    sameSite: 'None', secure: true, 
+    maxAge: 24 * 60 * 60 * 1000 });
+
+  return res.json({
+    token: accessToken,
     successful: true
   })
 

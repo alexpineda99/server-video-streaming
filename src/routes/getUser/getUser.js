@@ -8,7 +8,7 @@ module.exports.getUser = async function (req, res) {
 
   try {
     let result = await user.find({ username: username });
-    let currentUser = jwt.decode(userToken, _SIGN).user;
+    let currentUser = jwt.decode(userToken, _SIGN).username;
 
     if (username === currentUser) {
       return res.send({sameUser: true})

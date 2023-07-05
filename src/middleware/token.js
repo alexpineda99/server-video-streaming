@@ -28,13 +28,11 @@ exports.userRefreshToken = function (username) {
 
 exports.refreshToken = function (req, res, next) {
 
-  if (req.cookies?.jwt) {
+  if (req.cookies?.user_access) {
   
     // Destructuring refreshToken from cookie
-    let refreshToken = req.cookies.jwt
-    console.log(refreshToken)
-    // console.log(refreshToken)
-    // Verifying refresh token
+    let refreshToken = req.cookies.user_access
+
     jwt.verify(refreshToken, process.env._SIGNREFRESH, 
     (err, decoded) => {
         if (err) {
@@ -45,7 +43,7 @@ exports.refreshToken = function (req, res, next) {
         else {
             // Correct token we send a new access token
             const accessToken = jwt.sign({
-                token: "fsaf"
+                token: "user_access"
             }, process.env._SIGN, {
                 expiresIn: '10m'
             });
@@ -73,6 +71,9 @@ exports.authHeader = function (req, res, next) {
 exports.validSign = function (req, res, next) {
   const { _SIGN } = process.env;
   const token = req.headers["auth"];
+  // req.cookies.name='Gourav'; 
+  console.log("hola")
+  console.log(req.cookies)
 
   try {
     jwt.verify(token, _SIGN);

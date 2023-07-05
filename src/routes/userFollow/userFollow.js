@@ -6,10 +6,10 @@ module.exports.followUser = async function (req, res) {
     try {
         const {_SIGN} = process.env;
         const userToken = req.headers.auth;
-        const currentUser = await User.findOne({username: `${jwt.decode(userToken, _SIGN).user}`});
+        const currentUser = await User.findOne({username: `${jwt.decode(userToken, _SIGN).username}`});
         const userTofollow = await User.findOne({username: `${req.params.username}`});
         let checkFollowing = currentUser.following.filter(CUser => CUser.username = userTofollow.username)
-
+        
         if (!currentUser || !userTofollow) {
             return res.status(404).json({message: "User not found"});
         }  
@@ -33,10 +33,10 @@ module.exports.followUser = async function (req, res) {
 
     } catch(err) {
 
-        console.log("error en following")
+        console.log(err)
         res.send({
             msg: err,
-            successful: true
+            successful: false
         })
 
     }

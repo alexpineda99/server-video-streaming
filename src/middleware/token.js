@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-exports.userAccesToken = function (username) {
+exports.userAccesToken = function (req, res, username) {
   //Access token
   try {
    let accessToken = jwt.sign({ username: username }, process.env._SIGN, { expiresIn: "10m" });
@@ -12,7 +12,7 @@ exports.userAccesToken = function (username) {
   }
 };
 
-exports.userRefreshToken = function (username) {
+exports.userRefreshToken = function (req, res, username) {
   //refresh access token
   try {
     let refreshToken = jwt.sign({ username: username }, process.env._SIGNREFRESH, {
@@ -26,18 +26,19 @@ exports.userRefreshToken = function (username) {
   }
 };
 
-exports.refreshToken = function (req, res, next) {
+exports.refreshToken = async function (req, res, next) {
 
   if (req.cookies?.user_access) {
   
     // Destructuring refreshToken from cookie
-    let refreshToken = req.cookies.user_access
+    let refreshToken = await req.cookies.user_access
 
     jwt.verify(refreshToken, process.env._SIGNREFRESH, 
     (err, decoded) => {
         if (err) {
 
             // Wrong Refesh Token
+            console.log("error en verificacion")
             return res.status(406).json({ message: 'Unauthorized.' });
         }
         else {
@@ -51,6 +52,7 @@ exports.refreshToken = function (req, res, next) {
         }
     })
 } else {
+  console.log("error sin token")
     return res.status(406).json({ message: 'Unauthorized..' });
 }
 

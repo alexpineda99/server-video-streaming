@@ -41,6 +41,7 @@ const middle = require("./src/middleware/token");
 
 //routes pruebas
 app.get("/", (req, res) => res.send("aqui miaara"));
+app.get("/user/refresh", middle.refreshToken);
 app.get("/testing", (req, res) => res.redirect("/"));
 app.get("/profile", userProfile.getUserInfo);
 app.post("/testimage", uploader.upload.single("file"), (req, res) => {

@@ -4,6 +4,7 @@ const cors = require("cors");
 let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "1mb" }));
+app.use(express.json());
 app.use(cookieparser());
 app.use(
   cors({
@@ -41,14 +42,9 @@ const middle = require("./src/middleware/token");
 
 //routes pruebas
 app.get("/", (req, res) => res.send("aqui miaara"));
-app.get("/user/refresh", middle.refreshToken);
 app.get("/testing", (req, res) => res.redirect("/"));
-app.get("/profile", userProfile.getUserInfo);
-app.post("/testimage", uploader.upload.single("file"), (req, res) => {
-  res.send({ data: "todo bien", pic: req.body, data: req.file });
-});
-app.get("/verify", hasher.hashPassword, middle.refreshToken);
-app.get("/hasher", hasher.hashPassword);
+app.get("/verify", middle.refreshToken);
+// app.get("/hasher", hasher.hashPassword);
 
 //routes get
 app.get(
@@ -59,7 +55,9 @@ app.get(
 );
 app.get("/follow/:username", userFollow.followUser);
 app.get("/unfollow/:username", userUnfollow.unfollowUser);
+app.get("/refreshtoken", middle.refreshToken);
+app.get("/profile", middle.authHeader, middle.validSign, userProfile.getUserInfo);
 
 //routes post
 app.post("/checkavailability", userCheck.checkUserData);
-app.post("/loguser", loguser.logging, middle.refreshToken);
+app.post("/loguser", loguser.logging);

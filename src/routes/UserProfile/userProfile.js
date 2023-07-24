@@ -6,8 +6,8 @@ module.exports.getUserInfo = async function (req, res) {
   const {_SIGN} = process.env;
 
   try {
-    let currentUser = jwt.decode(userToken, _SIGN).user;
-    let result = await user.find({ username: currentUser });
+    let currentUser = jwt.decode(userToken, _SIGN);
+    let result = await user.find({ username: currentUser.username });
 
     res.send({
       infoUser: {
@@ -16,10 +16,10 @@ module.exports.getUserInfo = async function (req, res) {
         avatar: result[0].avatar.url,
         followers: result[0].followers,
         following: result[0].following,
-      },
+      }
     });
 
   } catch (err) {
-    res.status(404).send("Error " + err);
+    res.status(401).send("Error: " + err);
   }
 };

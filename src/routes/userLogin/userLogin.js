@@ -7,6 +7,7 @@ module.exports.logging = async function (req, res, next) {
   const { _SIGN } = process.env;
 
   const { username_email, password } = req.body;
+  try {
   const userWithEmailorUsername = await User.find({
     $or: [{ username: username_email }, { email: username_email }],
   }).catch((err) => {
@@ -22,8 +23,6 @@ module.exports.logging = async function (req, res, next) {
 
   if (userWithEmailorUsername[0].password !== password)
     return res.status(400).send("Email, username or password do not match.");
-
-  // let user = jwt.sign({user: userWithEmailorUsername[0].username}, _SIGN, {algorithm: "HS256", expiresIn: "1d"})
 
   let accessToken = token.userAccesToken(userWithEmailorUsername[0].username);
   let refreshToken = token.userRefreshToken(
@@ -41,5 +40,12 @@ module.exports.logging = async function (req, res, next) {
     accessToken: accessToken,
     successful: true
   });
+  
+} catch(err) {
+  res.send({
+    msg: err,
+    successful: false
+  })
+}
 
 };

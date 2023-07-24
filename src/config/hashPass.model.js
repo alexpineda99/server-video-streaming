@@ -2,14 +2,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 module.exports.hashPassword = async (req, res, next) => {
-  let { _SIGN } = process.env;
-    res.cookie("jt", "token", {
-    httpOnly: true,
-    sameSite: "None",
-    secure: true,
-    maxAge: 120*1000,
-  });
-
+  let { _SIGN, _SIGNREFRESH } = process.env;
+  //   res.cookie("jt", "token", {
+  //   httpOnly: true,
+  //   sameSite: "None",
+  //   secure: true,
+  //   maxAge: 120*1000,
+  // });
+  // res.status(404).send();
   // if (req.cookies) {
   //   console.log(req.cookies)
   //   res.clearCookie("jt")
@@ -27,7 +27,7 @@ module.exports.hashPassword = async (req, res, next) => {
 
   // res.clearCookie("jwt")
   // console.log(req.cookies)
-  res.send({msg: "cookie", puede: req.cookies})
+  // res.send({msg: "cookie", puede: req.cookies})
   // next()
 
   // let passhash = await bcrypt.hash("ronaldo", 10)
